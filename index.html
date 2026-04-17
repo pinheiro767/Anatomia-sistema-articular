@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Sistema Articular</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>ANATOMIA HUMANA</h1>
+<h2>Sistema Articular</h2>
+<p>Profª Dra. Cláudia Pinheiro</p>
+
+<div class="top">
+
+<button onclick="openCamera()">📷 Tirar Foto</button>
+
+<input type="file" id="fileInput" multiple accept="image/*">
+
+<button onclick="generatePDF()">📄 Gerar PDF</button>
+
+<button id="installBtn">📥 Baixar App</button>
+
+</div>
+
+</header>
+
+<nav>
+
+<button onclick="openTab('fibrosas')">Fibrosas</button>
+<button onclick="openTab('cartilaginosas')">Cartilaginosas</button>
+<button onclick="openTab('sinoviais1')">Sinoviais Sup</button>
+<button onclick="openTab('sinoviais2')">Sinoviais Inf</button>
+<button onclick="openTab('joelho')">Joelho</button>
+<button onclick="openTab('model3d')">3D</button>
+
+</nav>
+
+<main>
+
+<section id="fibrosas" class="tab active">
+
+<h3>Articulações Fibrosas</h3>
+
+<ul>
+
+<li>Sutura coronal (tipo serrátil)</li>
+<li>Sutura sagital (tipo serrátil)</li>
+<li>Membrana interóssea do antebraço</li>
+<li>Membrana interóssea da perna</li>
+
+</ul>
+
+<div class="gallery"></div>
+
+</section>
+
+<section id="cartilaginosas" class="tab">
+
+<h3>Articulações Cartilaginosas</h3>
+
+<ul>
+
+<li>Sínfise intervertebral</li>
+<li>Sínfise púbica</li>
+<li>Lâmina epifisial</li>
+
+</ul>
+
+<div class="gallery"></div>
+
+</section>
+
+<section id="sinoviais1" class="tab">
+
+<h3>Ombro</h3>
+
+<ul>
+
+<li>Cápsula articular</li>
+<li>Lábio glenoidal</li>
+
+</ul>
+
+<h3>Cotovelo</h3>
+
+<ul>
+
+<li>Cápsula articular</li>
+<li>Ligamento colateral ulnar</li>
+<li>Ligamento colateral radial</li>
+
+</ul>
+
+<div class="gallery"></div>
+
+</section>
+
+<section id="sinoviais2" class="tab">
+
+<h3>Sacroilíaca</h3>
+
+<ul>
+<li>Ligamento sacrotuberal</li>
+</ul>
+
+<h3>Quadril</h3>
+
+<ul>
+
+<li>Cápsula articular</li>
+<li>Ligamento da cabeça do fêmur</li>
+<li>Lábio do acetábulo</li>
+
+</ul>
+
+<div class="gallery"></div>
+
+</section>
+
+<section id="joelho" class="tab">
+
+<h3>Articulação do Joelho</h3>
+
+<ul>
+
+<li>Menisco lateral</li>
+<li>Menisco medial</li>
+<li>Ligamento cruzado anterior</li>
+<li>Ligamento cruzado posterior</li>
+<li>Ligamento colateral fibular</li>
+<li>Ligamento colateral tibial</li>
+<li>Ligamento da patela</li>
+
+</ul>
+
+<div class="gallery"></div>
+
+</section>
+
+<section id="model3d" class="tab">
+
+<h3>Reconstrução 3D</h3>
+
+<p>Tire várias fotos da peça anatômica.</p>
+
+<button onclick="generate3D()">Gerar 3D</button>
+
+<div id="viewer3d"></div>
+
+</section>
+
+</main>
+
+<script src="app.js"></script>
+<script src="camera.js"></script>
+<script src="pdf.js"></script>
+<script src="threeD.js"></script>
+
+</body>
+</html>
