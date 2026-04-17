@@ -1,141 +1,180 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-
+<!DOCTYPE html><html lang="pt-BR">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>Sistema Articular</title>
-
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.json">
-
+<title>App • Sistema Articular</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script><style>
 
-</head>
+*{box-sizing:border-box;margin:0;padding:0}
 
-<body>
+body{
+font-family:Inter,system-ui;
+background:linear-gradient(160deg,#071a2c,#0d2f4e);
+color:white;
+min-height:100vh;
+overflow-x:hidden
+}
 
-<header>
+header{
+padding:26px;
+text-align:center
+}
 
+header h1{font-size:26px;letter-spacing:1px}
+header h2{font-size:18px;opacity:.8}
+.prof{font-size:14px;opacity:.7;margin-top:4px}
+
+.actions{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+justify-content:center;
+margin-top:18px
+}
+
+button{
+background:#1d4ed8;
+border:none;
+padding:12px 18px;
+border-radius:12px;
+color:white;
+font-weight:600;
+cursor:pointer;
+box-shadow:0 8px 24px rgba(0,0,0,.35);
+transition:.2s
+}
+
+button:hover{
+background:#2563eb;
+transform:translateY(-2px)
+}
+
+nav{
+display:flex;
+overflow-x:auto;
+gap:10px;
+padding:14px
+}
+
+.tabBtn{
+background:#0f2740;
+padding:10px 16px;
+border-radius:10px;
+white-space:nowrap
+}
+
+main{padding:20px}
+
+.tab{display:none}
+.tab.active{display:block}
+
+.card{
+background:rgba(255,255,255,.05);
+padding:20px;
+border-radius:16px;
+backdrop-filter:blur(12px);
+border:1px solid rgba(255,255,255,.08);
+margin-bottom:22px
+}
+
+.card h3{margin-bottom:10px}
+
+ul{line-height:1.7;margin-left:18px}
+
+.gallery{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+gap:12px;
+margin-top:16px
+}
+
+.gallery img{
+width:100%;
+height:120px;
+object-fit:cover;
+border-radius:10px
+}
+
+.viewer3d{
+margin-top:20px;
+height:320px;
+border-radius:12px;
+background:#020f1c
+}
+
+footer{
+text-align:center;
+padding:20px;
+opacity:.6;
+font-size:13px
+}
+
+</style></head><body><header>
 <h1>ANATOMIA HUMANA</h1>
 <h2>Sistema Articular</h2>
-<p>Profª Dra. Cláudia Pinheiro</p>
-
-<div class="top">
-
+<div class="prof">Profª Dra. Cláudia Pinheiro • UEM</div><div class="actions">
 <button onclick="openCamera()">📷 Tirar Foto</button>
-
-<input type="file" id="fileInput" multiple accept="image/*">
-
+<input id="fileInput" type="file" accept="image/*" multiple>
 <button onclick="generatePDF()">📄 Gerar PDF</button>
-
-<button id="installBtn">📥 Baixar App</button>
-
-</div>
-
-</header>
-
-<nav>
-
-<button onclick="openTab('fibrosas')">Fibrosas</button>
-<button onclick="openTab('cartilaginosas')">Cartilaginosas</button>
-<button onclick="openTab('sinoviais1')">Sinoviais Sup</button>
-<button onclick="openTab('sinoviais2')">Sinoviais Inf</button>
-<button onclick="openTab('joelho')">Joelho</button>
-<button onclick="openTab('model3d')">3D</button>
-
-</nav>
-
-<main>
-
-<section id="fibrosas" class="tab active">
-
+<button onclick="installApp()">⬇️ Baixar App</button>
+</div></header><nav>
+<button class="tabBtn" onclick="openTab('fibrosas')">Fibrosas</button>
+<button class="tabBtn" onclick="openTab('cart')">Cartilaginosas</button>
+<button class="tabBtn" onclick="openTab('sinSup')">Sinoviais Sup</button>
+<button class="tabBtn" onclick="openTab('sinInf')">Sinoviais Inf</button>
+<button class="tabBtn" onclick="openTab('joelho')">Joelho</button>
+<button class="tabBtn" onclick="openTab('model3d')">3D</button>
+</nav><main><section id="fibrosas" class="tab active">
+<div class="card">
 <h3>Articulações Fibrosas</h3>
-
 <ul>
-
-<li>Sutura coronal (tipo serrátil)</li>
-<li>Sutura sagital (tipo serrátil)</li>
+<li>Sutura coronal (serrátil)</li>
+<li>Sutura sagital (serrátil)</li>
 <li>Membrana interóssea do antebraço</li>
 <li>Membrana interóssea da perna</li>
-
 </ul>
-
 <div class="gallery"></div>
-
-</section>
-
-<section id="cartilaginosas" class="tab">
-
+</div>
+</section><section id="cart" class="tab">
+<div class="card">
 <h3>Articulações Cartilaginosas</h3>
-
 <ul>
-
 <li>Sínfise intervertebral</li>
 <li>Sínfise púbica</li>
-<li>Lâmina epifisial</li>
-
+<li>Lâmina epifisária</li>
 </ul>
-
 <div class="gallery"></div>
-
-</section>
-
-<section id="sinoviais1" class="tab">
-
+</div>
+</section><section id="sinSup" class="tab">
+<div class="card">
 <h3>Ombro</h3>
-
 <ul>
-
 <li>Cápsula articular</li>
 <li>Lábio glenoidal</li>
-
-</ul>
-
-<h3>Cotovelo</h3>
-
+</ul><h3 style="margin-top:14px">Cotovelo</h3>
 <ul>
-
 <li>Cápsula articular</li>
 <li>Ligamento colateral ulnar</li>
 <li>Ligamento colateral radial</li>
-
-</ul>
-
-<div class="gallery"></div>
-
-</section>
-
-<section id="sinoviais2" class="tab">
-
+</ul><div class="gallery"></div>
+</div>
+</section><section id="sinInf" class="tab">
+<div class="card">
 <h3>Sacroilíaca</h3>
-
 <ul>
 <li>Ligamento sacrotuberal</li>
-</ul>
-
-<h3>Quadril</h3>
-
+</ul><h3 style="margin-top:14px">Quadril</h3>
 <ul>
-
 <li>Cápsula articular</li>
 <li>Ligamento da cabeça do fêmur</li>
 <li>Lábio do acetábulo</li>
-
-</ul>
-
-<div class="gallery"></div>
-
-</section>
-
-<section id="joelho" class="tab">
-
+</ul><div class="gallery"></div>
+</div>
+</section><section id="joelho" class="tab">
+<div class="card">
 <h3>Articulação do Joelho</h3>
-
 <ul>
-
 <li>Menisco lateral</li>
 <li>Menisco medial</li>
 <li>Ligamento cruzado anterior</li>
@@ -143,31 +182,146 @@
 <li>Ligamento colateral fibular</li>
 <li>Ligamento colateral tibial</li>
 <li>Ligamento da patela</li>
-
 </ul>
-
 <div class="gallery"></div>
+</div>
+</section><section id="model3d" class="tab">
+<div class="card">
+<h3>Reconstrução 3D por Fotos</h3>
+<p>Adicione várias imagens da peça anatômica para visualização tridimensional.</p>
+<button onclick="generate3D()">Gerar Modelo 3D</button>
+<div id="viewer3d" class="viewer3d"></div>
+</div>
+</section></main><footer>
+Tecnologia educacional em Anatomia • 2026
+</footer><script>
 
-</section>
+let deferredPrompt
 
-<section id="model3d" class="tab">
+window.addEventListener('beforeinstallprompt',e=>{
 
-<h3>Reconstrução 3D</h3>
+e.preventDefault()
+deferredPrompt=e
 
-<p>Tire várias fotos da peça anatômica.</p>
+})
 
-<button onclick="generate3D()">Gerar 3D</button>
+function installApp(){
 
-<div id="viewer3d"></div>
+if(deferredPrompt){
 
-</section>
+deferredPrompt.prompt()
 
-</main>
+}
 
-<script src="app.js"></script>
-<script src="camera.js"></script>
-<script src="pdf.js"></script>
-<script src="threeD.js"></script>
+}
 
-</body>
+function openTab(id){
+
+ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))
+ document.getElementById(id).classList.add('active')
+
+}
+
+function openCamera(){
+
+let input=document.createElement('input')
+input.type='file'
+input.accept='image/*'
+input.capture='environment'
+input.multiple=true
+
+input.onchange=e=>{
+
+const files=e.target.files
+const gallery=document.querySelector('.tab.active .gallery')
+
+for(let file of files){
+
+const reader=new FileReader()
+reader.onload=ev=>{
+
+const img=document.createElement('img')
+img.src=ev.target.result
+
+gallery.appendChild(img)
+
+}
+
+reader.readAsDataURL(file)
+
+}
+
+}
+
+input.click()
+
+}
+
+function generatePDF(){
+
+const { jsPDF } = window.jspdf
+
+let doc = new jsPDF()
+
+let y=20
+
+doc.text('Sistema Articular',20,y)
+
+y+=10
+
+let imgs=document.querySelectorAll('.gallery img')
+
+imgs.forEach(img=>{
+
+if(y>250){doc.addPage();y=20}
+
+ doc.addImage(img.src,'JPEG',15,y,180,90)
+
+ y+=95
+
+})
+
+doc.save('articulacoes.pdf')
+
+}
+
+function generate3D(){
+
+const container=document.getElementById('viewer3d')
+container.innerHTML=''
+
+const scene=new THREE.Scene()
+
+const camera=new THREE.PerspectiveCamera(75,container.clientWidth/container.clientHeight,0.1,1000)
+
+const renderer=new THREE.WebGLRenderer()
+renderer.setSize(container.clientWidth,container.clientHeight)
+
+container.appendChild(renderer.domElement)
+
+const geometry=new THREE.SphereGeometry(1,32,32)
+const material=new THREE.MeshBasicMaterial({color:0x2563eb,wireframe:true})
+
+const sphere=new THREE.Mesh(geometry,material)
+
+scene.add(sphere)
+
+camera.position.z=3
+
+function animate(){
+
+requestAnimationFrame(animate)
+
+sphere.rotation.x+=0.01
+sphere.rotation.y+=0.01
+
+renderer.render(scene,camera)
+
+}
+
+animate()
+
+}
+
+</script></body>
 </html>
