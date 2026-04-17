@@ -1,18 +1,19 @@
-self.addEventListener("install",e=>{
+const CACHE_NAME = 'anatomia-articular-v1';
 
-e.waitUntil(
+const urlsToCache = [
+  './',
+  './index.html',
+  './manifest.json'
+];
 
-caches.open("articular").then(cache=>{
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
+  );
+});
 
-return cache.addAll([
-"/",
-"index.html",
-"style.css",
-"app.js"
-])
-
-})
-
-)
-
-})
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => response || fetch(event.request))
+  );
+});
