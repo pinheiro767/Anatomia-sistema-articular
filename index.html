@@ -1,327 +1,814 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!doctype html>
+
+<html lang="pt-BR" class="h-full">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>App • Sistema Articular</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script><style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+  <title>Sistema Articular • Anatomia Humana</title>
+  <meta name="theme-color" content="#0b1f33">
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b1f33;
+      --surface: #122b45;
+      --surface-2: #173757;
+      --text: #eef4ff;
+      --muted: #afc2d8;
+      --primary: #3b82f6;
+      --secondary: #1d4ed8;
+      --danger: #ef4444;
+      --shadow: 0 18px 60px rgba(0,0,0,.28);
+      --radius: 20px;
+    }* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; font-family: 'DM Sans', sans-serif; background: radial-gradient(circle at top, #173757 0%, var(--bg) 45%, #071626 100%); color: var(--text); }
+body { overflow-x: hidden; }
 
-*{box-sizing:border-box;margin:0;padding:0}
-
-body{
-font-family:Inter,system-ui;
-background:linear-gradient(160deg,#071a2c,#0d2f4e);
-color:white;
-min-height:100vh;
-overflow-x:hidden
+.glass {
+  background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.04));
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: var(--radius);
 }
 
-header{
-padding:26px;
-text-align:center
+.tab-section { display: none; }
+.tab-section.active { display: block; }
+
+.nav-btn {
+  transition: all .22s ease;
+  border: 1px solid rgba(255,255,255,.08);
+}
+.nav-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(29,78,216,.35);
 }
 
-header h1{font-size:26px;letter-spacing:1px}
-header h2{font-size:18px;opacity:.8}
-.prof{font-size:14px;opacity:.7;margin-top:4px}
-
-.actions{
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-justify-content:center;
-margin-top:18px
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(134px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
 }
 
-button{
-background:#1d4ed8;
-border:none;
-padding:12px 18px;
-border-radius:12px;
-color:white;
-font-weight:600;
-cursor:pointer;
-box-shadow:0 8px 24px rgba(0,0,0,.35);
-transition:.2s
+.gallery-item {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 1;
+  background: linear-gradient(145deg, #16304c, #0f2237);
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 10px 30px rgba(0,0,0,.18);
 }
 
-button:hover{
-background:#2563eb;
-transform:translateY(-2px)
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-nav{
-display:flex;
-overflow-x:auto;
-gap:10px;
-padding:14px
+.chip {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  background: rgba(0,0,0,.45);
+  color: white;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
 }
 
-.tabBtn{
-background:#0f2740;
-padding:10px 16px;
-border-radius:10px;
-white-space:nowrap
+.gallery-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.gallery-item:hover .gallery-actions,
+.gallery-item:focus-within .gallery-actions {
+  opacity: 1;
 }
 
-main{padding:20px}
-
-.tab{display:none}
-.tab.active{display:block}
-
-.card{
-background:rgba(255,255,255,.05);
-padding:20px;
-border-radius:16px;
-backdrop-filter:blur(12px);
-border:1px solid rgba(255,255,255,.08);
-margin-bottom:22px
+.img-btn {
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.55);
+  color: white;
+  backdrop-filter: blur(8px);
 }
 
-.card h3{margin-bottom:10px}
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: rgba(7,22,38,.95);
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-size: 14px;
+  z-index: 999;
+  transition: transform .3s ease;
+  pointer-events: none;
+  border: 1px solid rgba(255,255,255,.1);
+  box-shadow: var(--shadow);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
 
-ul{line-height:1.7;margin-left:18px}
-
-.gallery{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
-gap:12px;
-margin-top:16px
+ul.content-list li {
+  position: relative;
+  padding: 10px 0 10px 22px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+ul.content-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  flex-shrink: 0;
 }
 
-.gallery img{
-width:100%;
-height:120px;
-object-fit:cover;
-border-radius:10px
+.annotation-input {
+  flex: 1;
+  min-width: 180px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 10px;
+  padding: 8px 12px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  transition: all .2s ease;
+}
+.annotation-input:focus {
+  outline: none;
+  background: rgba(255,255,255,.12);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(59,130,246,.16);
 }
 
-.viewer3d{
-margin-top:20px;
-height:320px;
-border-radius:12px;
-background:#020f1c
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn .35s ease forwards; }
+
+.camera-modal, .image-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.86);
+  z-index: 100;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
-footer{
-text-align:center;
-padding:20px;
-opacity:.6;
-font-size:13px
+.camera-modal video, .image-modal img {
+  max-width: min(92vw, 900px);
+  max-height: 70vh;
+  border-radius: 18px;
+  background: #000;
+  box-shadow: var(--shadow);
 }
 
-</style></head><body><header>
-<h1>ANATOMIA HUMANA</h1>
-<h2>Sistema Articular</h2>
-<div class="prof">Profª Dra. Cláudia Pinheiro • UEM</div><div class="actions">
-<button onclick="openCamera()">📷 Tirar Foto</button>
-<input id="fileInput" type="file" accept="image/*" multiple>
-<button onclick="generatePDF()">📄 Gerar PDF</button>
-<button onclick="installApp()">⬇️ Baixar App</button>
-</div></header><nav>
-<button class="tabBtn" onclick="openTab('fibrosas')">Fibrosas</button>
-<button class="tabBtn" onclick="openTab('cart')">Cartilaginosas</button>
-<button class="tabBtn" onclick="openTab('sinSup')">Sinoviais Sup</button>
-<button class="tabBtn" onclick="openTab('sinInf')">Sinoviais Inf</button>
-<button class="tabBtn" onclick="openTab('joelho')">Joelho</button>
-<button class="tabBtn" onclick="openTab('model3d')">3D</button>
-</nav><main><section id="fibrosas" class="tab active">
-<div class="card">
-<h3>Articulações Fibrosas</h3>
-<ul>
-<li>Sutura coronal (serrátil)</li>
-<li>Sutura sagital (serrátil)</li>
-<li>Membrana interóssea do antebraço</li>
-<li>Membrana interóssea da perna</li>
-</ul>
-<div class="gallery"></div>
+@keyframes rotate3d {
+  from { transform: rotateY(0deg) rotateX(6deg); }
+  to { transform: rotateY(360deg) rotateX(6deg); }
+}
+
+.carousel-3d {
+  width: 100%;
+  height: 360px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: rotate3d 18s infinite linear;
+}
+
+.photo-3d {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: min(75%, 340px);
+  height: min(75%, 340px);
+  border-radius: 16px;
+  object-fit: cover;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 12px 30px rgba(0,0,0,.26);
+}
+
+.empty-state {
+  border: 1px dashed rgba(255,255,255,.18);
+  border-radius: 18px;
+  padding: 28px;
+  text-align: center;
+  color: var(--muted);
+  background: rgba(255,255,255,.03);
+}
+
+@media (max-width: 640px) {
+  .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .annotation-input { min-width: 100%; }
+}
+
+  </style>
+</head>
+<body class="h-full">
+  <div id="app" class="min-h-full w-full overflow-x-hidden">
+    <div id="toast" class="toast"></div><div id="cameraModal" class="camera-modal">
+  <video id="cameraVideo" autoplay playsinline muted></video>
+  <div class="flex gap-3 mt-4 flex-wrap justify-center">
+    <button onclick="capturePhoto()" class="px-6 py-3 rounded-2xl font-semibold text-white" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">📷 Capturar</button>
+    <button onclick="closeCamera()" class="px-6 py-3 rounded-2xl font-semibold text-white bg-slate-700">✕ Fechar</button>
+  </div>
+  <canvas id="cameraCanvas" style="display:none"></canvas>
 </div>
-</section><section id="cart" class="tab">
-<div class="card">
-<h3>Articulações Cartilaginosas</h3>
-<ul>
-<li>Sínfise intervertebral</li>
-<li>Sínfise púbica</li>
-<li>Lâmina epifisária</li>
-</ul>
-<div class="gallery"></div>
+
+<div id="imageModal" class="image-modal" onclick="closeImageModal()">
+  <img id="imageModalImg" alt="Visualização ampliada">
+  <button onclick="closeImageModal()" class="mt-4 px-6 py-3 rounded-2xl font-semibold text-white bg-slate-700">Fechar</button>
 </div>
-</section><section id="sinSup" class="tab">
-<div class="card">
-<h3>Ombro</h3>
-<ul>
-<li>Cápsula articular</li>
-<li>Lábio glenoidal</li>
-</ul><h3 style="margin-top:14px">Cotovelo</h3>
-<ul>
-<li>Cápsula articular</li>
-<li>Ligamento colateral ulnar</li>
-<li>Ligamento colateral radial</li>
-</ul><div class="gallery"></div>
-</div>
-</section><section id="sinInf" class="tab">
-<div class="card">
-<h3>Sacroilíaca</h3>
-<ul>
-<li>Ligamento sacrotuberal</li>
-</ul><h3 style="margin-top:14px">Quadril</h3>
-<ul>
-<li>Cápsula articular</li>
-<li>Ligamento da cabeça do fêmur</li>
-<li>Lábio do acetábulo</li>
-</ul><div class="gallery"></div>
-</div>
-</section><section id="joelho" class="tab">
-<div class="card">
-<h3>Articulação do Joelho</h3>
-<ul>
-<li>Menisco lateral</li>
-<li>Menisco medial</li>
-<li>Ligamento cruzado anterior</li>
-<li>Ligamento cruzado posterior</li>
-<li>Ligamento colateral fibular</li>
-<li>Ligamento colateral tibial</li>
-<li>Ligamento da patela</li>
-</ul>
-<div class="gallery"></div>
-</div>
-</section><section id="model3d" class="tab">
-<div class="card">
-<h3>Reconstrução 3D por Fotos</h3>
-<p>Adicione várias imagens da peça anatômica para visualização tridimensional.</p>
-<button onclick="generate3D()">Gerar Modelo 3D</button>
-<div id="viewer3d" class="viewer3d"></div>
-</div>
-</section></main><footer>
-Tecnologia educacional em Anatomia • 2026
-</footer><script>
 
-let deferredPrompt
+<header class="px-4 pt-8 pb-6">
+  <div class="max-w-5xl mx-auto glass p-6 md:p-8">
+    <div class="text-center">
+      <p class="uppercase tracking-[0.3em] text-xs opacity-70 mb-2">Aplicativo PWA • Anatomia Humana</p>
+      <h1 id="mainTitle" class="text-3xl md:text-5xl font-extrabold" style="font-family:'Playfair Display',serif; color: var(--text);"></h1>
+      <h2 id="subtitle" class="text-lg md:text-2xl mt-1 font-bold" style="color: var(--primary);"></h2>
+      <p id="profName" class="text-sm mt-2 opacity-80" style="color: var(--muted);"></p>
+    </div>
 
-window.addEventListener('beforeinstallprompt',e=>{
+    <div class="flex flex-wrap justify-center gap-3 mt-6">
+      <button onclick="openCamera()" class="px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 text-white" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+        <i data-lucide="camera" style="width:16px;height:16px"></i>
+        Tirar Foto
+      </button>
 
-e.preventDefault()
-deferredPrompt=e
+      <label class="px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 cursor-pointer text-white" style="background: rgba(255,255,255,.1);">
+        <i data-lucide="upload" style="width:16px;height:16px"></i>
+        Importar
+        <input type="file" id="fileInput" multiple accept="image/*" class="hidden" onchange="handleFiles(this.files)">
+      </label>
 
-})
+      <button onclick="generatePDF()" class="px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 text-white" style="background: rgba(255,255,255,.1);">
+        <i data-lucide="file-text" style="width:16px;height:16px"></i>
+        Gerar PDF
+      </button>
 
-function installApp(){
+      <button onclick="clearCurrentTabPhotos()" class="px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 text-white" style="background: rgba(239,68,68,.16); border:1px solid rgba(239,68,68,.3)">
+        <i data-lucide="trash-2" style="width:16px;height:16px"></i>
+        Limpar Aba
+      </button>
+    </div>
+  </div>
+</header>
 
-if(deferredPrompt){
+<nav class="px-4 pb-4">
+  <div class="max-w-5xl mx-auto glass p-3 flex flex-wrap justify-center gap-2">
+    <button class="nav-btn px-4 py-2 rounded-2xl text-xs font-semibold active" onclick="openTab('fibrosas', this)" data-tab="fibrosas">Fibrosas</button>
+    <button class="nav-btn px-4 py-2 rounded-2xl text-xs font-semibold" onclick="openTab('cartilaginosas', this)" data-tab="cartilaginosas">Cartilaginosas</button>
+    <button class="nav-btn px-4 py-2 rounded-2xl text-xs font-semibold" onclick="openTab('sinoviais1', this)" data-tab="sinoviais1">Sinoviais Sup</button>
+    <button class="nav-btn px-4 py-2 rounded-2xl text-xs font-semibold" onclick="openTab('sinoviais2', this)" data-tab="sinoviais2">Sinoviais Inf</button>
+    <button class="nav-btn px-4 py-2 rounded-2xl text-xs font-semibold" onclick="openTab('joelho', this)" data-tab="joelho">Joelho</button>
+    <button class="nav-btn px-4 py-2 rounded-2xl text-xs font-semibold" onclick="openTab('model3d', this)" data-tab="model3d">3D</button>
+  </div>
+</nav>
 
-deferredPrompt.prompt()
+<main class="px-4 pb-14 max-w-5xl mx-auto w-full">
+  <section id="fibrosas" class="tab-section active fade-in glass p-5 md:p-6">
+    <h3 class="text-xl md:text-2xl font-bold mb-3" style="font-family:'Playfair Display',serif; color: var(--primary);">Articulações Fibrosas</h3>
+    <ul class="content-list">
+      <li><span>Sutura coronal (tipo serrátil)</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="fibrosas-0"></li>
+      <li><span>Sutura sagital (tipo serrátil)</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="fibrosas-1"></li>
+      <li><span>Membrana interóssea do antebraço</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="fibrosas-2"></li>
+      <li><span>Membrana interóssea da perna</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="fibrosas-3"></li>
+    </ul>
+    <div class="gallery-grid" data-gallery="fibrosas"></div>
+  </section>
 
-}
+  <section id="cartilaginosas" class="tab-section glass p-5 md:p-6">
+    <h3 class="text-xl md:text-2xl font-bold mb-3" style="font-family:'Playfair Display',serif; color: var(--primary);">Articulações Cartilaginosas</h3>
+    <ul class="content-list">
+      <li><span>Sínfise intervertebral</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="cartilaginosas-0"></li>
+      <li><span>Sínfise púbica</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="cartilaginosas-1"></li>
+      <li><span>Lâmina epifisial</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="cartilaginosas-2"></li>
+    </ul>
+    <div class="gallery-grid" data-gallery="cartilaginosas"></div>
+  </section>
 
-}
+  <section id="sinoviais1" class="tab-section glass p-5 md:p-6">
+    <h3 class="text-xl md:text-2xl font-bold mb-3" style="font-family:'Playfair Display',serif; color: var(--primary);">Ombro</h3>
+    <ul class="content-list">
+      <li><span>Cápsula articular</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="sinoviais1-0"></li>
+      <li><span>Lábio glenoidal</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="sinoviais1-1"></li>
+    </ul>
+    <h3 class="text-xl md:text-2xl font-bold mt-6 mb-3" style="font-family:'Playfair Display',serif; color: var(--primary);">Cotovelo</h3>
+    <ul class="content-list">
+      <li><span>Cápsula articular</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="sinoviais1-2"></li>
+      <li><span>Ligamento colateral ulnar</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="sinoviais1-3"></li>
+      <li><span>Ligamento colateral radial</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="sinoviais1-4"></li>
+    </ul>
+    <div class="gallery-grid" data-gallery="sinoviais1"></div>
+  </section>
 
-function openTab(id){
+  <section id="sinoviais2" class="tab-section glass p-5 md:p-6">
+    <h3 class="text-xl md:text-2xl font-bold mb-3" style="font-family:'Playfair Display',serif; color: var(--primary);">Sacroilíaca</h3>
+    <ul class="content-list">
+      <li><span>Ligamento sacrotuberal</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="sinoviais2-0"></li>
+    </ul>
+    <h3 class="text-xl md:text-2xl font-bold mt-6 mb-3" style="font-family:'Playfair Display',serif; color: var(--primary);">Quadril</h3>
+    <ul class="content-list">
+      <li><span>Cápsula articular</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="sinoviais2-1"></li>
+      <li><span>Ligamento da cabeça do fêmur</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="sinoviais2-2"></li>
+      <li><span>Lábio do acetábulo</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="sinoviais2-3"></li>
+    </ul>
+    <div class="gallery-grid" data-gallery="sinoviais2"></div>
+  </section>
 
- document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'))
- document.getElementById(id).classList.add('active')
+  <section id="joelho" class="tab-section glass p-5 md:p-6">
+    <h3 class="text-xl md:text-2xl font-bold mb-3" style="font-family:'Playfair Display',serif; color: var(--primary);">Articulação do Joelho</h3>
+    <ul class="content-list">
+      <li><span>Menisco lateral</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="joelho-0"></li>
+      <li><span>Menisco medial</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="joelho-1"></li>
+      <li><span>Ligamento cruzado anterior</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="joelho-2"></li>
+      <li><span>Ligamento cruzado posterior</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="joelho-3"></li>
+      <li><span>Ligamento colateral fibular</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="joelho-4"></li>
+      <li><span>Ligamento colateral tibial</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="joelho-5"></li>
+      <li><span>Ligamento da patela</span><input type="text" class="annotation-input" placeholder="Adicionar anotação..." data-item="joelho-6"></li>
+    </ul>
+    <div class="gallery-grid" data-gallery="joelho"></div>
+  </section>
 
-}
+  <section id="model3d" class="tab-section glass p-5 md:p-6">
+    <h3 class="text-xl md:text-2xl font-bold mb-3" style="font-family:'Playfair Display',serif; color: var(--primary);">Reconstrução 3D</h3>
+    <p class="mb-4 text-sm md:text-base" style="color: var(--muted);">Esta área gera uma visualização 3D simulada usando as fotos capturadas em diferentes abas. Não é fotogrametria real, mas ajuda na percepção espacial do material.</p>
+    <button onclick="generate3D()" class="px-6 py-3 rounded-2xl font-semibold text-white flex items-center gap-2" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+      <i data-lucide="cube" style="width:18px;height:18px"></i>
+      Gerar Visualização 3D
+    </button>
+    <div id="viewer3d" class="mt-6 p-6 rounded-2xl" style="background: rgba(255,255,255,.04); min-height: 320px; display:flex; align-items:center; justify-content:center; color: var(--muted); border:1px solid rgba(255,255,255,.08);">
+      <div class="text-center">
+        <p class="opacity-80">Nenhuma foto capturada ainda</p>
+        <p class="text-xs opacity-60 mt-2">Tire fotos nas abas anteriores para gerar a visualização 3D</p>
+      </div>
+    </div>
+  </section>
+</main>
 
-function openCamera(){
+  </div>  <script>
+    const DB_NAME = 'anatomia-articular-db';
+    const DB_VERSION = 1;
+    const STORE_APP = 'app_state';
 
-let input=document.createElement('input')
-input.type='file'
-input.accept='image/*'
-input.capture='environment'
-input.multiple=true
+    let activeTab = 'fibrosas';
+    let cameraStream = null;
+    let db = null;
+    let toastTimer = null;
+    let deferredPrompt = null;
 
-input.onchange=e=>{
+    const TAB_IDS = ['fibrosas', 'cartilaginosas', 'sinoviais1', 'sinoviais2', 'joelho'];
+    const TAB_TITLES = {
+      fibrosas: 'Articulações Fibrosas',
+      cartilaginosas: 'Articulações Cartilaginosas',
+      sinoviais1: 'Sinoviais - Membros Superiores',
+      sinoviais2: 'Sinoviais - Membros Inferiores',
+      joelho: 'Articulação do Joelho'
+    };
 
-const files=e.target.files
-const gallery=document.querySelector('.tab.active .gallery')
+    const state = {
+      galleries: { fibrosas: [], cartilaginosas: [], sinoviais1: [], sinoviais2: [], joelho: [] },
+      annotations: { fibrosas: {}, cartilaginosas: {}, sinoviais1: {}, sinoviais2: {}, joelho: {} }
+    };
 
-for(let file of files){
+    const appConfig = {
+      mainTitle: 'ANATOMIA HUMANA',
+      subtitle: 'Sistema Articular',
+      professor: 'Profª Dra. Cláudia Pinheiro'
+    };
 
-const reader=new FileReader()
-reader.onload=ev=>{
+    function init() {
+      document.getElementById('mainTitle').textContent = appConfig.mainTitle;
+      document.getElementById('subtitle').textContent = appConfig.subtitle;
+      document.getElementById('profName').textContent = appConfig.professor;
+      lucide.createIcons();
+      bindAnnotationEvents();
+      registerPWAEvents();
+      openDatabase().then(loadPersistedState).then(() => {
+        TAB_IDS.forEach(renderGallery);
+        restoreAnnotationsToInputs();
+      });
+    }
 
-const img=document.createElement('img')
-img.src=ev.target.result
+    function registerPWAEvents() {
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+      });
+    }
 
-gallery.appendChild(img)
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+    }
 
-}
+    function openTab(id, btn) {
+      activeTab = id;
+      document.querySelectorAll('.tab-section').forEach(section => section.classList.remove('active', 'fade-in'));
+      const target = document.getElementById(id);
+      target.classList.add('active');
+      requestAnimationFrame(() => target.classList.add('fade-in'));
 
-reader.readAsDataURL(file)
+      document.querySelectorAll('.nav-btn').forEach(button => button.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+    }
 
-}
+    function bindAnnotationEvents() {
+      document.addEventListener('input', async (e) => {
+        if (!e.target.classList.contains('annotation-input')) return;
+        const itemKey = e.target.dataset.item;
+        const [tab] = itemKey.split('-');
+        state.annotations[tab][itemKey] = e.target.value;
+        await persistState();
+      });
+    }
 
-}
+    function restoreAnnotationsToInputs() {
+      document.querySelectorAll('.annotation-input').forEach(input => {
+        const key = input.dataset.item;
+        const [tab] = key.split('-');
+        input.value = state.annotations[tab]?.[key] || '';
+      });
+    }
 
-input.click()
+    function openDatabase() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+        request.onupgradeneeded = (event) => {
+          const database = event.target.result;
+          if (!database.objectStoreNames.contains(STORE_APP)) {
+            database.createObjectStore(STORE_APP, { keyPath: 'id' });
+          }
+        };
+        request.onsuccess = () => {
+          db = request.result;
+          resolve(db);
+        };
+        request.onerror = () => reject(request.error);
+      });
+    }
 
-}
+    function persistState() {
+      if (!db) return Promise.resolve();
+      const payload = {
+        id: 'app_state_v1',
+        galleries: state.galleries,
+        annotations: state.annotations,
+        updatedAt: Date.now()
+      };
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_APP, 'readwrite');
+        tx.objectStore(STORE_APP).put(payload);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      });
+    }
 
-function generatePDF(){
+    function loadPersistedState() {
+      if (!db) return Promise.resolve();
+      return new Promise((resolve) => {
+        const tx = db.transaction(STORE_APP, 'readonly');
+        const req = tx.objectStore(STORE_APP).get('app_state_v1');
+        req.onsuccess = () => {
+          if (req.result) {
+            Object.assign(state.galleries, req.result.galleries || {});
+            Object.assign(state.annotations, req.result.annotations || {});
+          }
+          resolve();
+        };
+        req.onerror = () => resolve();
+      });
+    }
 
-const { jsPDF } = window.jspdf
+    function getAllPhotos() {
+      return TAB_IDS.flatMap(tab => state.galleries[tab] || []);
+    }
 
-let doc = new jsPDF()
+    function createGalleryCard(photo, index, tab) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'gallery-item fade-in';
+      wrapper.innerHTML = `
+        <img src="${photo.dataUrl}" alt="Foto ${index + 1}" loading="lazy">
+        <div class="gallery-actions">
+          <button class="img-btn" title="Ampliar" onclick="openImageModal('${tab}', ${index})">🔍</button>
+          <button class="img-btn" title="Excluir" onclick="removeImage('${tab}', ${index})">✕</button>
+        </div>
+        <div class="chip">${photo.sizeLabel || 'foto'}</div>
+      `;
+      return wrapper;
+    }
 
-let y=20
+    function renderGallery(tab) {
+      const container = document.querySelector(`[data-gallery="${tab}"]`);
+      if (!container) return;
+      container.innerHTML = '';
 
-doc.text('Sistema Articular',20,y)
+      const photos = state.galleries[tab] || [];
+      if (!photos.length) {
+        container.innerHTML = `<div class="empty-state" style="grid-column:1 / -1">Nenhuma foto nesta aba ainda.</div>`;
+        return;
+      }
 
-y+=10
+      photos.forEach((photo, index) => {
+        container.appendChild(createGalleryCard(photo, index, tab));
+      });
+    }
 
-let imgs=document.querySelectorAll('.gallery img')
+    async function removeImage(tab, index) {
+      state.galleries[tab].splice(index, 1);
+      renderGallery(tab);
+      await persistState();
+      showToast('Foto removida.');
+    }
 
-imgs.forEach(img=>{
+    async function clearCurrentTabPhotos() {
+      if (!state.galleries[activeTab]?.length) {
+        showToast('Esta aba já está vazia.');
+        return;
+      }
+      state.galleries[activeTab] = [];
+      renderGallery(activeTab);
+      await persistState();
+      showToast('Fotos da aba removidas.');
+    }
 
-if(y>250){doc.addPage();y=20}
+    function openImageModal(tab, index) {
+      const photo = state.galleries[tab]?.[index];
+      if (!photo) return;
+      document.getElementById('imageModalImg').src = photo.dataUrl;
+      document.getElementById('imageModal').style.display = 'flex';
+    }
 
- doc.addImage(img.src,'JPEG',15,y,180,90)
+    function closeImageModal() {
+      document.getElementById('imageModal').style.display = 'none';
+      document.getElementById('imageModalImg').src = '';
+    }
 
- y+=95
+    function formatBytes(bytes) {
+      if (!bytes) return '0 KB';
+      const kb = bytes / 1024;
+      if (kb < 1024) return `${Math.round(kb)} KB`;
+      return `${(kb / 1024).toFixed(1)} MB`;
+    }
 
-})
+    function loadImage(fileOrBlob) {
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(fileOrBlob);
+        const img = new Image();
+        img.onload = () => {
+          URL.revokeObjectURL(url);
+          resolve(img);
+        };
+        img.onerror = reject;
+        img.src = url;
+      });
+    }
 
-doc.save('articulacoes.pdf')
+    async function compressImage(fileOrBlob, maxDimension = 1600, quality = 0.72) {
+      const image = await loadImage(fileOrBlob);
+      let { width, height } = image;
 
-}
+      if (width > height && width > maxDimension) {
+        height = Math.round((height * maxDimension) / width);
+        width = maxDimension;
+      } else if (height >= width && height > maxDimension) {
+        width = Math.round((width * maxDimension) / height);
+        height = maxDimension;
+      }
 
-function generate3D(){
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d', { alpha: false });
+      ctx.drawImage(image, 0, 0, width, height);
 
-const container=document.getElementById('viewer3d')
-container.innerHTML=''
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', quality));
+      const dataUrl = await new Promise(resolve => {
+        const reader = new FileReader();
+        reader.onload = e => resolve(e.target.result);
+        reader.readAsDataURL(blob);
+      });
 
-const scene=new THREE.Scene()
+      return {
+        dataUrl,
+        width,
+        height,
+        bytes: blob.size,
+        sizeLabel: formatBytes(blob.size),
+        createdAt: Date.now()
+      };
+    }
 
-const camera=new THREE.PerspectiveCamera(75,container.clientWidth/container.clientHeight,0.1,1000)
+    async function addPhotoToActiveTab(fileOrBlob) {
+      const photo = await compressImage(fileOrBlob);
+      state.galleries[activeTab].push(photo);
+      renderGallery(activeTab);
+      await persistState();
+    }
 
-const renderer=new THREE.WebGLRenderer()
-renderer.setSize(container.clientWidth,container.clientHeight)
+    async function handleFiles(files) {
+      const list = Array.from(files || []);
+      if (!list.length) return;
+      showToast('Processando imagens...');
+      for (const file of list) {
+        try {
+          await addPhotoToActiveTab(file);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      document.getElementById('fileInput').value = '';
+      showToast(`${list.length} foto(s) importada(s) com compressão.`);
+    }
 
-container.appendChild(renderer.domElement)
+    async function openCamera() {
+      try {
+        const modal = document.getElementById('cameraModal');
+        const video = document.getElementById('cameraVideo');
+        cameraStream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: { ideal: 'environment' },
+            width: { ideal: 1600 },
+            height: { ideal: 1200 }
+          },
+          audio: false
+        });
+        video.srcObject = cameraStream;
+        modal.style.display = 'flex';
+      } catch (error) {
+        console.error(error);
+        showToast('Câmera indisponível neste ambiente.');
+      }
+    }
 
-const geometry=new THREE.SphereGeometry(1,32,32)
-const material=new THREE.MeshBasicMaterial({color:0x2563eb,wireframe:true})
+    async function capturePhoto() {
+      const video = document.getElementById('cameraVideo');
+      const canvas = document.getElementById('cameraCanvas');
+      if (!video.videoWidth || !video.videoHeight) {
+        showToast('A câmera ainda está iniciando.');
+        return;
+      }
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d').drawImage(video, 0, 0);
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.78));
+      await addPhotoToActiveTab(blob);
+      showToast('Foto capturada e salva offline.');
+    }
 
-const sphere=new THREE.Mesh(geometry,material)
+    function closeCamera() {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+      }
+      document.getElementById('cameraModal').style.display = 'none';
+    }
 
-scene.add(sphere)
+    function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
 
-camera.position.z=3
+      doc.setFillColor(11, 31, 51);
+      doc.rect(0, 0, 210, 297, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(24);
+      doc.text(appConfig.mainTitle, 105, 24, { align: 'center' });
+      doc.setFontSize(16);
+      doc.setTextColor(59, 130, 246);
+      doc.text(appConfig.subtitle, 105, 34, { align: 'center' });
+      doc.setFontSize(11);
+      doc.setTextColor(220, 230, 245);
+      doc.text(appConfig.professor, 105, 42, { align: 'center' });
 
-function animate(){
+      let y = 56;
 
-requestAnimationFrame(animate)
+      TAB_IDS.forEach(tab => {
+        const photos = state.galleries[tab] || [];
+        const ann = state.annotations[tab] || {};
+        const hasAnnotations = Object.values(ann).some(Boolean);
+        const hasPhotos = photos.length > 0;
+        if (!hasAnnotations && !hasPhotos) return;
 
-sphere.rotation.x+=0.01
-sphere.rotation.y+=0.01
+        if (y > 245) { doc.addPage(); y = 20; }
+        doc.setTextColor(59, 130, 246);
+        doc.setFontSize(14);
+        doc.text(TAB_TITLES[tab], 14, y);
+        y += 7;
 
-renderer.render(scene,camera)
+        if (hasAnnotations) {
+          doc.setTextColor(255, 255, 255);
+          doc.setFontSize(9);
+          Object.entries(ann).forEach(([key, value]) => {
+            if (!value) return;
+            const label = document.querySelector(`[data-item="${key}"]`)?.previousElementSibling?.textContent || key;
+            const lines = doc.splitTextToSize(`• ${label}: ${value}`, 180);
+            if (y + lines.length * 4 > 270) { doc.addPage(); y = 20; }
+            doc.text(lines, 14, y);
+            y += lines.length * 4 + 1;
+          });
+          y += 3;
+        }
 
-}
+        for (const photo of photos) {
+          if (y > 225) { doc.addPage(); y = 20; }
+          try {
+            doc.addImage(photo.dataUrl, 'JPEG', 14, y, 62, 46);
+            doc.setTextColor(200, 210, 225);
+            doc.setFontSize(8);
+            doc.text(photo.sizeLabel || '', 14, y + 50);
+            y += 56;
+          } catch (error) {
+            console.error(error);
+          }
+        }
+        y += 4;
+      });
 
-animate()
+      doc.save('sistema_articular.pdf');
+      showToast('PDF gerado com sucesso.');
+    }
 
-}
+    function generate3D() {
+      const allPhotos = getAllPhotos();
+      if (!allPhotos.length) {
+        showToast('Tire fotos primeiro para gerar 3D.');
+        return;
+      }
 
-</script></body>
+      const viewer = document.getElementById('viewer3d');
+      viewer.innerHTML = '';
+
+      const shell = document.createElement('div');
+      shell.style.cssText = 'width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; perspective:1100px;';
+
+      const carousel = document.createElement('div');
+      carousel.className = 'carousel-3d';
+
+      const radius = Math.min(260, Math.max(140, 38 * allPhotos.length));
+      allPhotos.slice(0, 14).forEach((photo, index, arr) => {
+        const angle = (360 / arr.length) * index;
+        const img = document.createElement('img');
+        img.src = photo.dataUrl;
+        img.className = 'photo-3d';
+        img.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
+        carousel.appendChild(img);
+      });
+
+      const info = document.createElement('div');
+      info.className = 'text-center';
+      info.innerHTML = `<div class="text-lg font-bold" style="color:var(--text)">${allPhotos.length} foto(s)</div><div class="text-sm" style="color:var(--muted)">Visualização espacial simulada</div>`;
+
+      shell.appendChild(carousel);
+      shell.appendChild(info);
+      viewer.appendChild(shell);
+      showToast('Visualização 3D gerada.');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeCamera();
+        closeImageModal();
+      }
+    });
+
+    init();
+  </script></body>
 </html>
