@@ -264,22 +264,33 @@ ul.content-list li::before {
       <p id="profName" class="text-sm mt-2 opacity-80" style="color: var(--muted);"></p>
     </div>
 
-    <div class="flex flex-wrap justify-center gap-3 mt-6">
-      <button onclick="openCamera()" class="px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 text-white" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
-        <i data-lucide="camera" style="width:16px;height:16px"></i>
-        Tirar Foto
-      </button>
+   <div class="flex flex-wrap justify-center gap-3 mt-6">
+  <button onclick="openCamera()" class="px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 text-white" style="background: linear-gradient(135deg, var(--primary), var(--secondary));">
+    <i data-lucide="camera" style="width:16px;height:16px"></i>
+    Tirar Foto
+  </button>
 
-      <label class="px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 cursor-pointer text-white" style="background: rgba(255,255,255,.1);">
-        <i data-lucide="upload" style="width:16px;height:16px"></i>
-        Importar
-        <input type="file" id="fileInput" multiple accept="image/*" class="hidden" onchange="handleFiles(this.files)">
-      </label>
+  <label class="px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 cursor-pointer text-white" style="background: rgba(255,255,255,.1);">
+    <i data-lucide="upload" style="width:16px;height:16px"></i>
+    Importar
+    <input type="file" id="fileInput" multiple accept="image/*" class="hidden" onchange="handleFiles(this.files)">
+  </label>
 
-      <button onclick="generatePDF()" class="px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 text-white" style="background: rgba(255,255,255,.1);">
-        <i data-lucide="file-text" style="width:16px;height:16px"></i>
-        Gerar PDF
-      </button>
+  <button onclick="generatePDF()" class="px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 text-white" style="background: rgba(255,255,255,.1);">
+    <i data-lucide="file-text" style="width:16px;height:16px"></i>
+    Gerar PDF
+  </button>
+
+  <button id="installBtn" onclick="installApp()" class="px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 text-white" style="display:none; background: linear-gradient(135deg, var(--primary), var(--secondary));">
+    <i data-lucide="download" style="width:16px;height:16px"></i>
+    Baixar App
+  </button>
+
+  <button onclick="clearCurrentTabPhotos()" class="px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 text-white" style="background: rgba(239,68,68,.16); border:1px solid rgba(239,68,68,.3)">
+    <i data-lucide="trash-2" style="width:16px;height:16px"></i>
+    Limpar Aba
+  </button>
+</div>
 
       <button onclick="clearCurrentTabPhotos()" class="px-4 py-3 rounded-2xl text-sm font-semibold flex items-center gap-2 text-white" style="background: rgba(239,68,68,.16); border:1px solid rgba(239,68,68,.3)">
         <i data-lucide="trash-2" style="width:16px;height:16px"></i>
